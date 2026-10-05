@@ -1,0 +1,362 @@
+<title>Stars and Strikes Game Day Guide</title>
+<meta name="description" content="Weekly sports programming guide for all 17 Stars and Strikes locations">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: brand bar → location rail (grouped by state) → sticky day strip → "Main Screens" feature cards → side-feed table → channel lineup. */
+:root{
+  --bg:#F3F5FA; --surface:#FFFFFF; --surface-2:#E9EEF8; --fg:#0F1F3F; --muted:#5A6A8C; --line:#D5DCEC;
+  --navy:#0E2A5C; --navy-ink:#0A1D44; --red:#D22030; --gold:#F4B531; --sky:#2E6BD6; --on-navy:#FFFFFF;
+  --feature-bg:#0E2A5C; --feature-fg:#FFFFFF; --feature-muted:#B9C7E6; --feature-line:rgba(255,255,255,.14);
+  --chip-bg:#E9EEF8; --chip-fg:#2A3C66; --warn:#B4531A; --warn-bg:#FFF1E6;
+  --display:"Barlow Condensed","Arial Narrow",Impact,sans-serif; --body:"Barlow","Helvetica Neue",Arial,sans-serif;
+  --shadow:0 8px 24px rgba(14,42,92,.10);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0A1430; --surface:#13224A; --surface-2:#1B2D5C; --fg:#EEF2FA; --muted:#A3B2D1; --line:#2A3F70;
+  --navy:#13224A; --navy-ink:#0A1430; --on-navy:#FFFFFF; --feature-bg:#0F1F45; --feature-fg:#FFFFFF; --feature-muted:#B9C7E6; --feature-line:rgba(255,255,255,.14);
+  --chip-bg:#1E3263; --chip-fg:#D7E0F5; --warn:#FFB07A; --warn-bg:#3A2412; --shadow:0 8px 24px rgba(0,0,0,.35); color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0A1430; --surface:#13224A; --surface-2:#1B2D5C; --fg:#EEF2FA; --muted:#A3B2D1; --line:#2A3F70;
+  --navy:#13224A; --navy-ink:#0A1430; --on-navy:#FFFFFF; --feature-bg:#0F1F45; --feature-fg:#FFFFFF; --feature-muted:#B9C7E6; --feature-line:rgba(255,255,255,.14);
+  --chip-bg:#1E3263; --chip-fg:#D7E0F5; --warn:#FFB07A; --warn-bg:#3A2412; --shadow:0 8px 24px rgba(0,0,0,.35); color-scheme:dark }
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-family:var(--display);text-wrap:balance;line-height:1.05}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px}
+
+/* Brand bar */
+.brand{background:var(--navy-ink);color:var(--on-navy);border-bottom:4px solid var(--red)}
+.brand .wrap{display:flex;align-items:center;gap:18px;padding-block:12px;flex-wrap:wrap}
+.brand img{height:72px;width:auto;max-width:100%;flex:none}
+.brand .ttl{flex:1 1 240px;min-width:0}
+.brand h1{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:.01em;text-transform:uppercase}
+.brand h1 span{color:var(--gold)}
+.brand .wk{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:.04em;text-transform:uppercase;color:#B9C7E6}
+.brand .upd{font-size:12.5px;color:#8FA2CC;margin-top:2px}
+
+/* Location rail */
+.locbar{background:var(--navy);color:var(--on-navy)}
+.locbar .wrap{padding-block:12px 10px}
+.loc-label{font-family:var(--display);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#B9C7E6;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.loc-select{display:none}
+.loc-select select{width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.25);background:#FFFFFF;color:#0F1F3F;font:600 16px var(--body)}
+.loc-groups{display:flex;gap:18px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.loc-group{flex:none;display:flex;flex-direction:column;gap:6px}
+.loc-group .st{font-family:var(--display);font-size:12px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase}
+.loc-group .pills{display:flex;gap:6px}
+.pill{padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.22);font-family:var(--display);font-size:16px;font-weight:600;letter-spacing:.03em;white-space:nowrap;color:#E6ECF8;transition:background .15s}
+.pill:hover{background:rgba(255,255,255,.10)}
+.pill[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
+@media (max-width:720px){ .loc-groups{display:none} .loc-select{display:block} }
+
+/* Day strip */
+.daystrip{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 2px 10px rgba(14,42,92,.06)}
+.daystrip .wrap{display:flex;gap:4px;overflow-x:auto;padding-block:6px;scrollbar-width:none}
+.day{flex:1 0 auto;min-width:72px;padding:8px 10px;border-radius:8px;text-align:center;border:1px solid transparent}
+.day .dn{font-family:var(--display);font-size:17px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.day .dd{font-size:12px;color:var(--muted)}
+.day .cnt{display:inline-block;margin-top:3px;font-size:11px;font-weight:600;color:var(--muted)}
+.day[aria-pressed="true"]{background:var(--surface-2);border-color:var(--line);color:var(--fg)}
+.day[aria-pressed="true"] .dn{color:var(--red)}
+.day.today .dd::after{content:" · today";color:var(--red);font-weight:700}
+
+/* Main content */
+main .wrap{padding-block:22px 48px;display:grid;gap:26px;grid-template-columns:minmax(0,1fr)}
+main section,.loc-head,.two>*{min-width:0}
+.loc-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 20px}
+.loc-head h2{font-size:clamp(28px,4vw,40px);font-weight:800;text-transform:uppercase}
+.loc-head h2 small{display:block;font-size:14px;font-weight:600;letter-spacing:.12em;color:var(--muted)}
+.loc-meta{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;background:var(--chip-bg);color:var(--chip-fg);font-size:12.5px;font-weight:600;letter-spacing:.02em}
+.chip .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.note{padding:10px 14px;border-radius:8px;background:var(--warn-bg);color:var(--warn);font-size:13.5px;font-weight:500;border-left:4px solid var(--warn)}
+
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.sec-h h3{font-size:24px;font-weight:800;text-transform:uppercase;letter-spacing:.02em}
+.sec-h h3 em{font-style:normal;color:var(--red)}
+.sec-h p{margin:0;font-size:13px;color:var(--muted)}
+
+/* Feature cards: Main Screens (audio on) */
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr));gap:14px}
+.feat{background:var(--feature-bg);color:var(--feature-fg);border-radius:12px;padding:16px 16px 14px;display:grid;gap:12px;position:relative;overflow:hidden;box-shadow:var(--shadow);border-top:5px solid var(--red)}
+.feat.champ{border-top-color:var(--gold)}
+.feat .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.feat .time{font-family:var(--display);font-size:30px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.feat .time small{display:block;font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--feature-muted)}
+.feat .snd{display:block;margin-top:6px;font-family:var(--display);font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
+.feat .lbl{font-family:var(--display);font-size:13px;letter-spacing:.14em;font-weight:700;padding:5px 9px;border-radius:5px;background:var(--red);color:#fff;text-transform:uppercase;white-space:nowrap}
+.feat.champ .lbl{background:var(--gold);color:#1B1B1B}
+.matchup{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+.team{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;text-align:center}
+.team .nm{font-family:var(--display);font-size:19px;font-weight:700;line-height:1.05;letter-spacing:.01em}
+.team .rk{font-size:12px;color:var(--gold);font-weight:700}
+.vs{font-family:var(--display);font-size:16px;font-weight:700;color:var(--feature-muted);letter-spacing:.1em}
+.badge{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:.02em;border:3px solid;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.badge.long{font-size:15px}
+.badge.sm.long{font-size:10.5px}
+.badge.sm{width:34px;height:34px;font-size:12px;border-width:2px;box-shadow:none}
+.feat .where{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid var(--feature-line);padding-top:10px;flex-wrap:wrap}
+.chan{font-family:var(--display);font-size:22px;font-weight:800;line-height:1}
+.chan small{display:block;font-size:11.5px;letter-spacing:.1em;color:var(--feature-muted);font-weight:600;font-family:var(--body);text-transform:uppercase}
+.why{display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end}
+.why span{font-size:11.5px;font-weight:600;padding:3px 7px;border-radius:4px;background:rgba(255,255,255,.12);color:#E6ECF8}
+.feat .nt{font-size:12.5px;color:var(--feature-muted)}
+.empty{padding:22px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);text-align:center}
+
+/* Side feeds table */
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.fbtn{padding:5px 11px;border-radius:999px;border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--muted)}
+.fbtn[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th{font-family:var(--display);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.t{font-family:var(--display);font-size:18px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+td.t small{display:block;font-size:11px;color:var(--muted);font-family:var(--body);font-weight:600;letter-spacing:.08em}
+.mu{display:flex;align-items:center;gap:8px;min-width:0}
+.mu .nm{font-weight:600}
+.mu .nm b{color:var(--muted);font-weight:500}
+.mu .nm .rk{color:var(--red);font-weight:700;font-size:12px}
+.mu .sub{font-size:12px;color:var(--muted)}
+td.ch{font-family:var(--display);font-size:18px;font-weight:700;white-space:nowrap}
+td.ch small{display:block;font-size:11px;color:var(--muted);font-family:var(--body);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;padding:2px 6px;border-radius:4px;text-transform:uppercase}
+.tag.champ{background:var(--gold);color:#1B1B1B}
+.tag.main{background:var(--red);color:#fff}
+.tag.stream{background:var(--chip-bg);color:var(--chip-fg)}
+.tag.verify{background:var(--warn-bg);color:var(--warn)}
+tr.is-main td{background:color-mix(in srgb,var(--red) 7%,transparent)}
+.sp{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+
+/* Channel lineup + legend */
+.two{display:grid;grid-template-columns:1.2fr 1fr;gap:14px}
+@media (max-width:820px){ .two{grid-template-columns:1fr} }
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card h3{font-size:20px;font-weight:800;text-transform:uppercase;margin-bottom:10px}
+.lineup{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.lu{padding:9px 10px;border-radius:8px;background:var(--surface-2);display:flex;flex-direction:column;gap:2px;min-width:0}
+.lu b{font-family:var(--display);font-size:20px;font-weight:800;line-height:1}
+.lu span{font-size:12px;color:var(--muted);font-weight:600}
+.lu.v b::after{content:" *";color:var(--warn)}
+.legend{font-size:13.5px;color:var(--muted);display:grid;gap:7px}
+.legend b{color:var(--fg)}
+footer .wrap{padding-block:0 30px;font-size:12px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){ .pill,.day,.fbtn{transition:background .15s,color .15s} }
+</style>
+
+<header class="brand">
+  <div class="wrap">
+    <img alt="Stars and Strikes — Getaway-n-Play" src="data:image/webp;base64,__LOGO__">
+    <div class="ttl">
+      <h1>Game Day <span>Guide</span></h1>
+      <div class="wk" id="wk-label"></div>
+      <div class="upd" id="wk-upd"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="locbar" aria-label="Locations">
+  <div class="wrap">
+    <div class="loc-label"><span>Choose your location — 17 stores</span><span id="loc-tz"></span></div>
+    <div class="loc-select"><label class="visually-hidden" for="loc-sel" style="position:absolute;left:-9999px">Location</label><select id="loc-sel"></select></div>
+    <div class="loc-groups" id="loc-groups"></div>
+  </div>
+</nav>
+
+<nav class="daystrip" aria-label="Days"><div class="wrap" id="days"></div></nav>
+
+<main><div class="wrap">
+  <div class="loc-head">
+    <h2 id="loc-title"></h2>
+    <div class="loc-meta" id="loc-meta"></div>
+  </div>
+  <div class="note" id="loc-note" hidden></div>
+
+  <section>
+    <div class="sec-h"><h3>Main screens <em>· audio on</em></h3><p id="feat-sub"></p></div>
+    <div class="features" id="features"></div>
+  </section>
+
+  <section>
+    <div class="sec-h"><h3>Side feeds <em>· every game on</em></h3><div class="filters" id="filters"></div></div>
+    <div class="tbl-wrap"><table id="tbl"><thead><tr><th>Time</th><th>Matchup</th><th>Network</th><th>Channel</th><th>Notes</th></tr></thead><tbody id="tbody"></tbody></table></div>
+  </section>
+
+  <section class="two">
+    <div class="card"><h3 id="lu-title">Channel lineup</h3><div class="lineup" id="lineup"></div><p style="margin:10px 0 0;font-size:12px;color:var(--muted)">* Not in the channel lookup you provided — standard DirecTV number, verify on the box. ESPN2 / ESPNU are mapped to 206 exactly as your guide lists them.</p></div>
+    <div class="card"><h3>How main screens are picked</h3><div class="legend">
+      <div><b>Monday Night Football is the only sound game on Mondays.</b> The one exception: a local team playing a championship or postseason game (for example the Braves in the NLCS) also gets sound.</div>
+      <div><b>Championship / postseason next.</b> On every other day, any playoff or title game (MLB Division Series, LCS, World Series, etc.) is a main screen.</div>
+      <div><b>Local teams next.</b> Each store has a weighted list of its home college and pro teams. The Atlanta stores lean Georgia, Georgia Tech, Falcons and Braves; the Carolinas lean Clemson, South Carolina, UNC, NC State, Panthers; Huntsville leans Alabama and Auburn; Smyrna leans Tennessee, Vanderbilt and Titans.</div>
+      <div><b>Then the size of the game.</b> AP Top 25 rankings, ranked-vs-ranked matchups, rivalries and national primetime windows push a game up.</div>
+      <div><b>One sound game at a time.</b> The highest-priority game owns its window. Nothing else gets sound while it is on, and a smaller game only takes over once it ends. A gold <b>Sound from</b> / <b>Sound until</b> line on a card tells the floor exactly when to switch. Every other game runs on the side screens.</div>
+    </div></div>
+  </section>
+</div></main>
+<footer><div class="wrap">Sources: NFL schedule via CBS Sports · college football kickoffs and TV via FBSchedules.com · AP Top 25 (Oct 4) via CBS Sports · MLB postseason via MLB.com. Channel lineups from the Stars and Strikes programming guide (DirecTV).</div></footer>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+  const D = JSON.parse(document.getElementById('data').textContent);
+  const T = D.teams, AP = D.ap, NETS = D.nets, MK = D.markets, LOCS = D.locations;
+  const DAYS = ["2026-10-05","2026-10-06","2026-10-07","2026-10-08","2026-10-09","2026-10-10","2026-10-11","2026-10-12"];
+  const DN = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  const MN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const STATES = {GA:"Georgia",SC:"South Carolina",NC:"North Carolina",AL:"Alabama",TN:"Tennessee"};
+
+  document.getElementById('wk-label').textContent = D.week.label + " · " + D.week.sub;
+  document.getElementById('wk-upd').textContent = "Updated " + D.week.updated + " · Kickoffs and networks from NFL/ESPN/CBS/MLB schedules";
+
+  // ---- helpers
+  function textOn(hex){ const c=hex.replace('#',''); const r=parseInt(c.substr(0,2),16),g=parseInt(c.substr(2,2),16),b=parseInt(c.substr(4,2),16); return (0.299*r+0.587*g+0.114*b)>160?'#111':'#fff'; }
+  function badge(key, sm){ const t=T[key]; return '<span class="badge'+(sm?' sm':'')+(t.abbr.length>=4?' long':'')+'" style="background:'+t.c1+';border-color:'+t.c2+';color:'+textOn(t.c1)+'" aria-hidden="true">'+t.abbr+'</span>'; }
+  function shortName(k){ const t=T[k]; if(t.short) return t.short; const w=t.name.split(' '); return t.lg==='CFB'? w.slice(0,-1).join(' ') : w[w.length-1]; }
+  function rank(key){ return AP[key] ? '#'+AP[key]+' ' : ''; }
+  function mins(t){ if(t==='TBD') return 9999; const m=t.match(/(\d+):(\d+) (AM|PM)/); let h=+m[1]%12; if(m[3]==='PM') h+=12; return h*60+ +m[2]; }
+  function fmt(t, tz){ if(t==='TBD') return 'TBD'; if(tz==='ET') return t; let m=mins(t)-60; let h=Math.floor(m/60), mm=m%60; const ap=h>=12?'PM':'AM'; h=h%12; if(h===0)h=12; return h+':'+(mm<10?'0':'')+mm+' '+ap; }
+  function dateLabel(d){ const [y,m,dd]=d.split('-').map(Number); const dt=new Date(y,m-1,dd); return {dn:DN[dt.getDay()], dd:MN[m-1]+' '+dd}; }
+  function todayET(){ try{ const p=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()); return p; }catch(e){ return ''; } }
+  function channel(game, loc){
+    const n = NETS[game.net]; const mk = MK[loc.market];
+    if(n.kind==='local') return {ch: mk[game.net], sub: n.label, verify:false, stream:false};
+    if(n.ch==='stream') return {ch:'App', sub:n.label, verify:false, stream:true};
+    if(n.ch==='varies') return {ch:'CW', sub:'varies by ZIP', verify:true, stream:false};
+    return {ch:n.ch, sub:n.label, verify:!n.inGuide, stream:false};
+  }
+  function score(g, loc){
+    let s=0, why=[];
+    if(g.tier==='champ'){ s+=9; why.push('Postseason'); }
+    if(g.sport==='NFL'){ s+= g.tier==='marquee'?7:4; if(g.tier==='marquee') why.push('Primetime'); }
+    if(g.sport==='CFB'){ s+=3; const ra=AP[g.away], rh=AP[g.home]; if(ra) s+=2+(ra<=10?1:0); if(rh) s+=2+(rh<=10?1:0); if(ra&&rh){ s+=2; why.push('#'+ra+' vs #'+rh); } else if(ra||rh){ why.push('Top 25'); } if(g.tier==='marquee'){ s+=4; if(!(ra&&rh)) why.push('Rivalry'); } }
+    if(g.pop){ s+=g.pop; if(g.note && /rivalry/i.test(g.note)) why.push('Rivalry'); }
+    const la=loc.local[g.away]||0, lh=loc.local[g.home]||0; const l=la+lh;
+    if(l){ s+=Math.min(l,12); const names=[]; if(la) names.push(shortName(g.away)); if(lh) names.push(shortName(g.home)); why.push('Local: '+names.join(', ')); }
+    return {s, why};
+  }
+  function block(t){ const m=mins(t); if(m>=9999) return 3; if(m<14*60) return 0; if(m<18*60) return 1; return 2; }
+  function dur(g){ return g.sport==='CFB' ? 205 : 195; } // assumed game length in minutes (CFB ~3h25, NFL/MLB ~3h15)
+  function toClock(m){ let h=Math.floor(m/60), mm=m%60; const ap=h>=12?'PM':'AM'; h=h%12; if(h===0)h=12; return h+':'+(mm<10?'0':'')+mm+' '+ap; }
+  function pickMains(games, loc){
+    const scored = games.map(g=>({g, ...score(g,loc)})).sort((a,b)=> b.s-a.s || mins(a.g.time)-mins(b.g.time));
+    // Monday Night Football rule: MNF is the only game with sound, unless a local team is playing a championship/postseason game.
+    const mnf = scored.filter(x=>x.g.sport==='NFL' && x.g.label==='MNF');
+    if(mnf.length){
+      const localChamp = scored.filter(x=>x.g.tier==='champ' && ((loc.local[x.g.away]||0)+(loc.local[x.g.home]||0))>0);
+      mnf.forEach(x=>{ x.why=['Monday Night Football']; });
+      localChamp.forEach(x=>{ x.why=['Local team in postseason']; });
+      return [...mnf, ...localChamp].sort((a,b)=> mins(a.g.time)-mins(b.g.time));
+    }
+    // One sound game at a time. Games are taken in priority order; a game only gets sound for the stretch when no
+    // higher-priority game is on. It may start sound when a bigger game is wrapping up (within 45 min) and it hands
+    // sound off when a bigger game kicks off. Windows shorter than an hour are not worth switching for.
+    const picked=[];
+    for(const x of scored){
+      const st=mins(x.g.time); if(st>=9999) continue; // time not announced yet
+      const en=st+dur(x.g);
+      let sStart=st;
+      // a bigger game holding sound at kickoff: wait for it only if it is wrapping up (<= 45 min left)
+      const holding=picked.filter(p=>p.sStart<=st && st<p.sEnd);
+      if(holding.length){ const e=Math.max(...holding.map(p=>p.sEnd)); if(e-st>45) continue; sStart=e; }
+      if(picked.some(p=>p.sStart<=sStart && sStart<p.sEnd)) continue; // another bigger game takes over right then
+      const nextHigher=picked.filter(p=>p.sStart>sStart).map(p=>p.sStart);
+      const sEnd=Math.min(en, ...nextHigher);
+      if(sEnd-sStart<60) continue;
+      if(!x.why.length) x.why=['Best game in this window'];
+      x.st=st; x.en=en; x.sStart=sStart; x.sEnd=sEnd;
+      x.sound = (sStart>st?'Sound from '+toClock(loc.tz==='CT'?sStart-60:sStart):'') + (sStart>st&&sEnd<en?' · ':'') + (sEnd<en?'Sound until '+toClock(loc.tz==='CT'?sEnd-60:sEnd):'');
+      picked.push(x);
+    }
+    return picked.sort((a,b)=> a.st-b.st);
+  }
+
+  // ---- state
+  let locId = (location.hash||'').replace('#','');
+  if(!LOCS.some(l=>l.id===locId)) locId = LOCS[0].id;
+  const tET = todayET();
+  let day = DAYS.includes(tET) ? tET : DAYS[0];
+  let filter = 'ALL';
+  try{ const f=localStorage.getItem('ss-filter'); if(f) filter=f; }catch(e){}
+
+  // ---- location rail
+  const groups = document.getElementById('loc-groups'); const sel = document.getElementById('loc-sel');
+  const byState = {}; LOCS.forEach(l=>{ (byState[l.state]=byState[l.state]||[]).push(l); });
+  Object.keys(byState).forEach(st=>{
+    const g=document.createElement('div'); g.className='loc-group';
+    g.innerHTML='<div class="st">'+STATES[st]+'</div><div class="pills"></div>';
+    const p=g.querySelector('.pills');
+    byState[st].forEach(l=>{ const b=document.createElement('button'); b.className='pill'; b.textContent=l.name; b.dataset.id=l.id; b.setAttribute('aria-pressed', l.id===locId); b.addEventListener('click',()=>setLoc(l.id)); p.appendChild(b); });
+    groups.appendChild(g);
+    const og=document.createElement('optgroup'); og.label=STATES[st]; byState[st].forEach(l=>{ const o=document.createElement('option'); o.value=l.id; o.textContent=l.name+', '+l.state; og.appendChild(o); }); sel.appendChild(og);
+  });
+  sel.addEventListener('change',()=>setLoc(sel.value));
+
+  // ---- day strip
+  const daysEl=document.getElementById('days');
+  DAYS.forEach(d=>{ const {dn,dd}=dateLabel(d); const b=document.createElement('button'); b.className='day'+(d===tET?' today':''); b.dataset.d=d; b.innerHTML='<div class="dn">'+dn+'</div><div class="dd">'+dd+'</div><span class="cnt"></span>'; b.addEventListener('click',()=>{day=d;render();}); daysEl.appendChild(b); });
+
+  function setLoc(id){ locId=id; history.replaceState(null,'','#'+id); render(); }
+
+  function render(){
+    const loc = LOCS.find(l=>l.id===locId); const mk=MK[loc.market];
+    document.querySelectorAll('.pill').forEach(b=>b.setAttribute('aria-pressed', b.dataset.id===locId));
+    sel.value=locId;
+    document.getElementById('loc-tz').textContent = loc.tz==='CT' ? 'Times in Central' : 'Times in Eastern';
+    document.getElementById('loc-title').innerHTML = '<small>Stars and Strikes · '+STATES[loc.state]+'</small>'+loc.name;
+    const meta=document.getElementById('loc-meta'); meta.innerHTML='';
+    Object.entries(loc.local).filter(([k,w])=>w>0).sort((a,b)=>b[1]-a[1]).slice(0,6).forEach(([k])=>{ const t=T[k]; meta.insertAdjacentHTML('beforeend','<span class="chip"><span class="dot" style="background:'+t.c1+';outline:1px solid '+t.c2+'"></span>'+t.name+'</span>'); });
+    const note=document.getElementById('loc-note'); note.hidden=!loc.note; note.textContent=loc.note||'';
+
+    // day counts
+    document.querySelectorAll('.day').forEach(b=>{ b.setAttribute('aria-pressed', b.dataset.d===day); const n=D.games.filter(g=>g.date===b.dataset.d).length; b.querySelector('.cnt').textContent=n+' games'; });
+
+    const games = D.games.filter(g=>g.date===day);
+    const mains = pickMains(games, loc); const mainIds=new Set(mains.map(m=>m.g.id));
+    const {dn,dd}=dateLabel(day);
+    const hasMNF = games.some(g=>g.sport==='NFL' && g.label==='MNF');
+    document.getElementById('feat-sub').textContent = dn+' '+dd+' · '+mains.length+' sound game'+(mains.length===1?'':'s')+', one at a time, for '+loc.name+(hasMNF?' · MNF is the only sound game tonight; postseason baseball runs on side screens unless a local team is in it':'');
+    const fe=document.getElementById('features'); fe.innerHTML='';
+    if(!mains.length) fe.innerHTML='<div class="empty">No featured games on this day. Run the side feeds.</div>';
+    mains.forEach(({g,why,sound})=>{
+      const c=channel(g,loc); const neutral=g.neutral;
+      fe.insertAdjacentHTML('beforeend',
+        '<article class="feat'+(g.tier==='champ'?' champ':'')+'">'+
+        '<div class="top"><div class="time">'+fmt(g.time,loc.tz)+'<small>'+(g.time==='TBD'?'time to be announced':loc.tz)+' · '+g.sport+'</small>'+(sound?'<span class="snd">'+sound+'</span>':'')+'</div>'+(g.label?'<span class="lbl">'+g.label+'</span>':'')+'</div>'+
+        '<div class="matchup"><div class="team">'+badge(g.away)+'<div class="nm">'+(AP[g.away]?'<span class="rk">#'+AP[g.away]+'</span> ':'')+T[g.away].name+'</div></div>'+
+        '<div class="vs">'+(neutral?'VS':'@')+'</div>'+
+        '<div class="team">'+badge(g.home)+'<div class="nm">'+(AP[g.home]?'<span class="rk">#'+AP[g.home]+'</span> ':'')+T[g.home].name+'</div></div></div>'+
+        (g.note?'<div class="nt">'+g.note+'</div>':'')+
+        '<div class="where"><div class="chan">'+c.ch+(c.verify?' *':'')+'<small>'+c.sub+(c.stream?' · needs streaming login':'')+'</small></div><div class="why">'+why.map(w=>'<span>'+w+'</span>').join('')+'</div></div>'+
+        '</article>');
+    });
+
+    // filters
+    const sports=[...new Set(games.map(g=>g.sport))];
+    const fl=document.getElementById('filters'); fl.innerHTML='';
+    ['ALL',...sports].forEach(s=>{ const b=document.createElement('button'); b.className='fbtn'; b.textContent=s==='ALL'?'All':s; b.setAttribute('aria-pressed', filter===s || (filter!=='ALL' && !sports.includes(filter) && s==='ALL')); b.addEventListener('click',()=>{filter=s; try{localStorage.setItem('ss-filter',s);}catch(e){} render();}); fl.appendChild(b); });
+
+    const tb=document.getElementById('tbody'); tb.innerHTML='';
+    const rows=games.filter(g=>filter==='ALL'||!sports.includes(filter)||g.sport===filter).sort((a,b)=>mins(a.time)-mins(b.time) || (mainIds.has(b.id)-mainIds.has(a.id)));
+    if(!rows.length) tb.innerHTML='<tr><td colspan="5" style="color:var(--muted)">No games.</td></tr>';
+    rows.forEach(g=>{
+      const c=channel(g,loc); const isMain=mainIds.has(g.id);
+      const tags=[]; if(isMain) tags.push('<span class="tag main">Main</span>'); if(g.tier==='champ') tags.push('<span class="tag champ">Postseason</span>'); if(c.stream) tags.push('<span class="tag stream">Streaming</span>'); if(c.verify) tags.push('<span class="tag verify">Verify ch.</span>');
+      tb.insertAdjacentHTML('beforeend','<tr'+(isMain?' class="is-main"':'')+'><td class="t">'+fmt(g.time,loc.tz)+'<small>'+g.sport+'</small></td>'+
+        '<td><div class="mu">'+badge(g.away,true)+badge(g.home,true)+'<div><div class="nm">'+(AP[g.away]?'<span class="rk">#'+AP[g.away]+'</span> ':'')+T[g.away].name+' <b>'+(g.neutral?'vs':'@')+'</b> '+(AP[g.home]?'<span class="rk">#'+AP[g.home]+'</span> ':'')+T[g.home].name+'</div>'+(g.note?'<div class="sub">'+g.note+'</div>':'')+'</div></div></td>'+
+        '<td>'+NETS[g.net].label+'</td><td class="ch">'+c.ch+'<small>'+(c.sub!==NETS[g.net].label?c.sub:'')+'</small></td><td>'+tags.join(' ')+'</td></tr>');
+    });
+
+    // lineup
+    document.getElementById('lu-title').textContent='Channel lineup · '+mk.name;
+    const lu=document.getElementById('lineup'); lu.innerHTML='';
+    ['ABC','CBS','NBC','FOX'].forEach(k=>lu.insertAdjacentHTML('beforeend','<div class="lu"><b>'+mk[k]+'</b><span>'+k+'</span></div>'));
+    ['ESPN','FS1','CBSSN','SECN','ACCN','BTN','TBS','TNT','USA'].forEach(k=>{ const n=NETS[k]; lu.insertAdjacentHTML('beforeend','<div class="lu'+(n.inGuide?'':' v')+'"><b>'+n.ch+'</b><span>'+n.label+'</span></div>'); });
+  }
+  render();
+})();
+</script>
