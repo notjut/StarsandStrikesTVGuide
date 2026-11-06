@@ -191,8 +191,9 @@ footer .wrap{padding-block:0 30px;font-size:12px;color:var(--muted)}
     <div class="card"><h3 id="lu-title">Channel lineup</h3><div class="lineup" id="lineup"></div><p style="margin:10px 0 0;font-size:12px;color:var(--muted)">* Not in the channel lookup you provided — standard DirecTV number, verify on the box. ESPN2 / ESPNU are mapped to 206 exactly as your guide lists them.</p></div>
     <div class="card"><h3>How main screens are picked</h3><div class="legend">
       <div><b>Monday Night Football is the only sound game on Mondays.</b> The one exception: a local team playing a championship or postseason game (for example the Braves in the NLCS) also gets sound.</div>
-      <div><b>Championship / postseason next.</b> On every other day, any playoff or title game (MLB Division Series, LCS, World Series, etc.) is a main screen.</div>
-      <div><b>Local teams next.</b> Each store has a weighted list of its home college and pro teams. The Atlanta stores lean Georgia, Georgia Tech, Falcons and Braves; the Carolinas lean Clemson, South Carolina, UNC, NC State, Panthers; Huntsville leans Alabama and Auburn; Smyrna leans Tennessee, Vanderbilt and Titans.</div>
+      <div><b>Championship / postseason next.</b> On every other day, any playoff or title game (World Series, NBA Finals, Stanley Cup, March Madness, etc.) is a main screen.</div>
+      <div><b>Football owns football days.</b> Whenever NFL or college football is on (Thursday through Monday in season), NBA, NHL and college basketball run on the side screens only. On days with no football they compete for sound like any other game, local teams first.</div>
+      <div><b>Local teams next.</b> Each store has a weighted list of its home college and pro teams across football, basketball, hockey and baseball. The Atlanta stores lean Georgia, Georgia Tech, Falcons, Hawks and Braves; the Carolinas lean Clemson, South Carolina, UNC, NC State, Duke, Panthers, Hornets and Hurricanes; Huntsville leans Alabama and Auburn; Smyrna leans Tennessee, Vanderbilt, Titans and Predators.</div>
       <div><b>Then the size of the game.</b> AP Top 25 rankings, ranked-vs-ranked matchups, rivalries and national primetime windows push a game up.</div>
       <div><b>One sound game at a time.</b> The highest-priority game owns its window. Nothing else gets sound while it is on, and a smaller game only takes over once it ends. A gold <b>Sound from</b> / <b>Sound until</b> line on a card tells the floor exactly when to switch. Every other game runs on the side screens.</div>
     </div></div>
@@ -205,7 +206,10 @@ footer .wrap{padding-block:0 30px;font-size:12px;color:var(--muted)}
 (function(){
   const D = JSON.parse(document.getElementById('data').textContent);
   const T = D.teams, AP = D.ap, NETS = D.nets, MK = D.markets, LOCS = D.locations;
-  const DAYS = ["2026-10-05","2026-10-06","2026-10-07","2026-10-08","2026-10-09","2026-10-10","2026-10-11","2026-10-12"];
+  const DAYS = (function(){ const out=[]; const [y,m,d]=D.week.start.split('-').map(Number); const [y2,m2,d2]=D.week.end.split('-').map(Number); const cur=new Date(y,m-1,d), last=new Date(y2,m2-1,d2); while(cur<=last){ out.push(cur.getFullYear()+'-'+String(cur.getMonth()+1).padStart(2,'0')+'-'+String(cur.getDate()).padStart(2,'0')); cur.setDate(cur.getDate()+1); } return out; })();
+  const FOOTBALL = {NFL:true, CFB:true};
+  const APBB = D.apbb || {};
+  const SPORT_LABEL = {NFL:'NFL',CFB:'College FB',NBA:'NBA',NHL:'NHL',NCAAB:'College BB',MLB:'MLB'};
   const DN = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   const MN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const STATES = {GA:"Georgia",SC:"South Carolina",NC:"North Carolina",AL:"Alabama",TN:"Tennessee"};
@@ -233,6 +237,8 @@ footer .wrap{padding-block:0 30px;font-size:12px;color:var(--muted)}
     let s=0, why=[];
     if(g.tier==='champ'){ s+=9; why.push('Postseason'); }
     if(g.sport==='NFL'){ s+= g.tier==='marquee'?7:4; if(g.tier==='marquee') why.push('Primetime'); }
+    if(g.sport==='NBA'||g.sport==='NHL'){ s+=3; if(g.tier==='marquee'){ s+=2; why.push('National TV'); } }
+    if(g.sport==='NCAAB'){ s+=2; const ra=APBB[g.away], rh=APBB[g.home]; if(ra) s+=2; if(rh) s+=2; if(ra&&rh){ s+=2; why.push('#'+ra+' vs #'+rh); } else if(ra||rh){ why.push('Top 25'); } }
     if(g.sport==='CFB'){ s+=3; const ra=AP[g.away], rh=AP[g.home]; if(ra) s+=2+(ra<=10?1:0); if(rh) s+=2+(rh<=10?1:0); if(ra&&rh){ s+=2; why.push('#'+ra+' vs #'+rh); } else if(ra||rh){ why.push('Top 25'); } if(g.tier==='marquee'){ s+=4; if(!(ra&&rh)) why.push('Rivalry'); } }
     if(g.pop){ s+=g.pop; if(g.note && /rivalry/i.test(g.note)) why.push('Rivalry'); }
     const la=loc.local[g.away]||0, lh=loc.local[g.home]||0; const l=la+lh;
@@ -240,10 +246,12 @@ footer .wrap{padding-block:0 30px;font-size:12px;color:var(--muted)}
     return {s, why};
   }
   function block(t){ const m=mins(t); if(m>=9999) return 3; if(m<14*60) return 0; if(m<18*60) return 1; return 2; }
-  function dur(g){ return g.sport==='CFB' ? 205 : 195; } // assumed game length in minutes (CFB ~3h25, NFL/MLB ~3h15)
+  function dur(g){ if(g.sport==='CFB') return 205; if(g.sport==='NBA'||g.sport==='NHL'||g.sport==='NCAAB') return 150; return 195; } // assumed game length in minutes
   function toClock(m){ let h=Math.floor(m/60), mm=m%60; const ap=h>=12?'PM':'AM'; h=h%12; if(h===0)h=12; return h+':'+(mm<10?'0':'')+mm+' '+ap; }
   function pickMains(games, loc){
-    const scored = games.map(g=>({g, ...score(g,loc)})).sort((a,b)=> b.s-a.s || mins(a.g.time)-mins(b.g.time));
+    let scored = games.map(g=>({g, ...score(g,loc)})).sort((a,b)=> b.s-a.s || mins(a.g.time)-mins(b.g.time));
+    // Football-day rule: when any football is on, basketball and hockey stay on the side screens (unless it is a championship game).
+    if(games.some(g=>FOOTBALL[g.sport])) scored = scored.filter(x=>FOOTBALL[x.g.sport] || x.g.tier==='champ');
     // Monday Night Football rule: MNF is the only game with sound, unless a local team is playing a championship/postseason game.
     const mnf = scored.filter(x=>x.g.sport==='NFL' && x.g.label==='MNF');
     if(mnf.length){
@@ -310,7 +318,9 @@ footer .wrap{padding-block:0 30px;font-size:12px;color:var(--muted)}
     document.getElementById('loc-title').innerHTML = '<small>Stars and Strikes · '+STATES[loc.state]+'</small>'+loc.name;
     const meta=document.getElementById('loc-meta'); meta.innerHTML='';
     Object.entries(loc.local).filter(([k,w])=>w>0).sort((a,b)=>b[1]-a[1]).slice(0,6).forEach(([k])=>{ const t=T[k]; meta.insertAdjacentHTML('beforeend','<span class="chip"><span class="dot" style="background:'+t.c1+';outline:1px solid '+t.c2+'"></span>'+t.name+'</span>'); });
-    const note=document.getElementById('loc-note'); note.hidden=!loc.note; note.textContent=loc.note||'';
+    const offTeams=Object.entries(loc.local).filter(([k,w])=>w>=7 && D.games.some(g=>g.sport===T[k].lg || (T[k].lg==='CFB'&&g.sport==='NCAAB')) && !D.games.some(g=>g.away===k||g.home===k)).map(([k])=>shortName(k));
+    const noteTxt=[loc.note||'', offTeams.length?('Off this week: '+offTeams.join(', ')+'.'):''].filter(Boolean).join(' ');
+    const note=document.getElementById('loc-note'); note.hidden=!noteTxt; note.textContent=noteTxt;
 
     // day counts
     document.querySelectorAll('.day').forEach(b=>{ b.setAttribute('aria-pressed', b.dataset.d===day); const n=D.games.filter(g=>g.date===b.dataset.d).length; b.querySelector('.cnt').textContent=n+' games'; });
@@ -326,7 +336,7 @@ footer .wrap{padding-block:0 30px;font-size:12px;color:var(--muted)}
       const c=channel(g,loc); const neutral=g.neutral;
       fe.insertAdjacentHTML('beforeend',
         '<article class="feat'+(g.tier==='champ'?' champ':'')+'">'+
-        '<div class="top"><div class="time">'+fmt(g.time,loc.tz)+'<small>'+(g.time==='TBD'?'time to be announced':loc.tz)+' · '+g.sport+'</small>'+(sound?'<span class="snd">'+sound+'</span>':'')+'</div>'+(g.label?'<span class="lbl">'+g.label+'</span>':'')+'</div>'+
+        '<div class="top"><div class="time">'+fmt(g.time,loc.tz)+'<small>'+(g.time==='TBD'?'time to be announced':loc.tz)+' · '+(SPORT_LABEL[g.sport]||g.sport)+'</small>'+(sound?'<span class="snd">'+sound+'</span>':'')+'</div>'+(g.label?'<span class="lbl">'+g.label+'</span>':'')+'</div>'+
         '<div class="matchup"><div class="team">'+badge(g.away)+'<div class="nm">'+(AP[g.away]?'<span class="rk">#'+AP[g.away]+'</span> ':'')+T[g.away].name+'</div></div>'+
         '<div class="vs">'+(neutral?'VS':'@')+'</div>'+
         '<div class="team">'+badge(g.home)+'<div class="nm">'+(AP[g.home]?'<span class="rk">#'+AP[g.home]+'</span> ':'')+T[g.home].name+'</div></div></div>'+
@@ -338,7 +348,7 @@ footer .wrap{padding-block:0 30px;font-size:12px;color:var(--muted)}
     // filters
     const sports=[...new Set(games.map(g=>g.sport))];
     const fl=document.getElementById('filters'); fl.innerHTML='';
-    ['ALL',...sports].forEach(s=>{ const b=document.createElement('button'); b.className='fbtn'; b.textContent=s==='ALL'?'All':s; b.setAttribute('aria-pressed', filter===s || (filter!=='ALL' && !sports.includes(filter) && s==='ALL')); b.addEventListener('click',()=>{filter=s; try{localStorage.setItem('ss-filter',s);}catch(e){} render();}); fl.appendChild(b); });
+    ['ALL',...sports].forEach(s=>{ const b=document.createElement('button'); b.className='fbtn'; b.textContent=s==='ALL'?'All':({NFL:'NFL',CFB:'College FB',NBA:'NBA',NHL:'NHL',NCAAB:'College BB',MLB:'MLB'}[s]||s); b.setAttribute('aria-pressed', filter===s || (filter!=='ALL' && !sports.includes(filter) && s==='ALL')); b.addEventListener('click',()=>{filter=s; try{localStorage.setItem('ss-filter',s);}catch(e){} render();}); fl.appendChild(b); });
 
     const tb=document.getElementById('tbody'); tb.innerHTML='';
     const rows=games.filter(g=>filter==='ALL'||!sports.includes(filter)||g.sport===filter).sort((a,b)=>mins(a.time)-mins(b.time) || (mainIds.has(b.id)-mainIds.has(a.id)));
@@ -346,7 +356,7 @@ footer .wrap{padding-block:0 30px;font-size:12px;color:var(--muted)}
     rows.forEach(g=>{
       const c=channel(g,loc); const isMain=mainIds.has(g.id);
       const tags=[]; if(isMain) tags.push('<span class="tag main">Main</span>'); if(g.tier==='champ') tags.push('<span class="tag champ">Postseason</span>'); if(c.stream) tags.push('<span class="tag stream">Streaming</span>'); if(c.verify) tags.push('<span class="tag verify">Verify ch.</span>');
-      tb.insertAdjacentHTML('beforeend','<tr'+(isMain?' class="is-main"':'')+'><td class="t">'+fmt(g.time,loc.tz)+'<small>'+g.sport+'</small></td>'+
+      tb.insertAdjacentHTML('beforeend','<tr'+(isMain?' class="is-main"':'')+'><td class="t">'+fmt(g.time,loc.tz)+'<small>'+(SPORT_LABEL[g.sport]||g.sport)+'</small></td>'+
         '<td><div class="mu">'+badge(g.away,true)+badge(g.home,true)+'<div><div class="nm">'+(AP[g.away]?'<span class="rk">#'+AP[g.away]+'</span> ':'')+T[g.away].name+' <b>'+(g.neutral?'vs':'@')+'</b> '+(AP[g.home]?'<span class="rk">#'+AP[g.home]+'</span> ':'')+T[g.home].name+'</div>'+(g.note?'<div class="sub">'+g.note+'</div>':'')+'</div></div></td>'+
         '<td>'+NETS[g.net].label+'</td><td class="ch">'+c.ch+'<small>'+(c.sub!==NETS[g.net].label?c.sub:'')+'</small></td><td>'+tags.join(' ')+'</td></tr>');
     });
