@@ -2,10 +2,10 @@ import json, base64, os
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 WEEK = {
-    "label": "Week of Nov 5–9, 2026",
-    "sub": "NFL Week 9 · College Football Nov 7 · NBA Cup · NHL · College Basketball",
-    "updated": "Thu Nov 5, 2026",
-    "start": "2026-11-05", "end": "2026-11-09",
+    "label": "Week of Nov 9–16, 2026",
+    "sub": "NFL Week 10 · College Football Nov 14 · NBA Cup · NHL Global Series · College Basketball",
+    "updated": "Mon Nov 9, 2026",
+    "start": "2026-11-09", "end": "2026-11-16",
 }
 
 # ---------------- Teams: abbr, primary, secondary (text color auto) ----------------
@@ -279,14 +279,40 @@ t("WIS","Wisconsin Badgers","WIS","#C5050C","#FFFFFF","CFB")
 t("CSU","Colorado State Rams","CSU","#1E4D2B","#C8C372","CFB")
 t("MICH","Michigan Wolverines","MICH","#00274C","#FFCB05","CFB")
 t("MTSU","Middle Tennessee Blue Raiders","MTSU","#0066CC","#000000","CFB")
-AP = {"MIAMI":1,"UGA":2,"UTAH":3,"ND":4,"UCLA":5,"IU":6,"BYU":7,"UK":8,"ALA":9,"TEX":10,"OSU":11,"MISS":12,"TTU":13,"WAKE":14,"LSU":15,"TENN":16,"HOUC":17,"USC":18,"MIZ":19,"BSU":20,"IOWA":21,"UNM":22,"SCAR":23,"ARIZ":24,"FLA":25}
+# College basketball opponents (added Nov 9, 2026)
+t("FAMU","Florida A&M Rattlers","FAMU","#F47937","#00843D","CFB")
+t("EKU","Eastern Kentucky Colonels","EKU","#861F41","#FFFFFF","CFB")
+t("CHSO","Charleston Southern Buccaneers","CSU","#002855","#B9975B","CFB")
+t("WIN","Winthrop Eagles","WIN","#872434","#D5A021","CFB")
+t("MER","Mercer Bears","MER","#F76800","#000000","CFB")
+t("EVAN","Evansville Purple Aces","EVAN","#4B2E83","#F58025","CFB")
+t("SPU","Saint Peter's Peacocks","SPU","#003DA5","#FFFFFF","CFB")
+t("VUL","Virginia-Lynchburg Dragons","VUL","#8B1A1A","#FFC72C","CFB")
+t("LAGR","LaGrange Panthers","LAGR","#E51937","#000000","CFB")
+t("GTWN","Georgetown Hoyas","GTWN","#041E42","#8D817B","CFB")
+t("TNST","Tennessee State Tigers","TNST","#00539F","#FFFFFF","CFB")
+t("NAU","Northern Arizona Lumberjacks","NAU","#003466","#FFC72C","CFB")
+t("PVAM","Prairie View A&M Panthers","PVAM","#4F2D7F","#FFB81C","CFB")
+t("SIUE","SIU Edwardsville Cougars","SIUE","#CC0000","#000000","CFB")
+t("GWEB","Gardner-Webb Runnin' Bulldogs","GWU","#BB0000","#000000","CFB")
+t("UNCA","UNC Asheville Bulldogs","UNCA","#003DA5","#FFFFFF","CFB")
+t("SUU","Southern Utah Thunderbirds","SUU","#CC0000","#FFFFFF","CFB")
+t("NORF","Norfolk State Spartans","NSU","#007A33","#F3D03E","CFB")
+t("CIT","The Citadel Bulldogs","CIT","#3975B7","#FFFFFF","CFB")
+t("JVU","Jacksonville Dolphins","JU","#00674A","#FFFFFF","CFB")
+t("GRAM","Grambling State Tigers","GRAM","#000000","#ECAA00","CFB")
+t("MARQ","Marquette Golden Eagles","MARQ","#003366","#FFCC00","CFB")
+t("GONZ","Gonzaga Bulldogs","GONZ","#041E42","#C8102E","CFB")
+t("SJU","St. John's Red Storm","SJU","#BA0C2F","#FFFFFF","CFB")
+# AP Top 25 football — poll released Sun Nov 8, 2026
+AP = {"UGA":1,"UTAH":2,"ND":3,"UCLA":4,"MIAMI":5,"IU":6,"ALA":7,"TEX":8,"TENN":9,"TTU":10,"WAKE":11,"BYU":12,"UK":13,"HOUC":14,"USC":15,"IOWA":16,"BSU":17,"ORE":18,"MISS":19,"SCAR":20,"OSU":21,"ARIZ":22,"UNM":23,"LSU":24,"SMU":25}
 
 # ---- short display names (team name without the mascot) for "Local:" chips and off-week notes
 _MULTI = ["Crimson Tide","Blue Devils","Yellow Jackets","Fighting Irish","Demon Deacons","Wolf Pack","Red Raiders","Fighting Illini",
  "Golden Eagles","Golden Grizzlies","Golden Flashes","Golden Bears","Golden Gophers","Golden Hurricane","Golden Knights","Blue Raiders",
  "Red Wolves","Ragin' Cajuns","Sun Devils","Nittany Lions","Rainbow Warriors","Tar Heels","Mean Green","Scarlet Knights","Horned Frogs",
  "Blue Hens","Blue Hose","Fighting Hawks","Thundering Herd","Black Knights","Green Wave","White Sox","Blue Jays","Red Sox","Maple Leafs",
- "Red Wings","Blue Jackets","Trail Blazers"]
+ "Red Wings","Blue Jackets","Trail Blazers","Purple Aces","Red Storm","Runnin' Bulldogs"]
 for _k,_t in T.items():
     if _t.get("short"): continue
     n=_t["name"]
@@ -297,7 +323,8 @@ for _k,_t in T.items():
     else:
         _t["short"] = base                                # college: school ("Alabama", "Georgia Tech")
 
-APBB = {"FLA":1,"DUKE":2,"ILL":3,"CONN":4,"ARIZ":5,"MSU":6,"TEX":7,"TENN":8,"UVA":9,"HOUC":10,"LOU":11,"ARK":12,"MIAMI":14,"MICH":16,"KU":17,"ISU":18,"TTU":19,"ALA":20,"USC":21,"UCLA":22,"UK":23,"VAN":24,"BYU":25}
+# AP men's basketball poll — preseason poll still current as of Mon Nov 9 (first regular-season poll not yet released)
+APBB = {"FLA":1,"DUKE":2,"ILL":3,"CONN":4,"ARIZ":5,"MSU":6,"TEX":7,"TENN":8,"UVA":9,"HOUC":10,"LOU":11,"ARK":12,"SJU":13,"MIAMI":14,"GONZ":15,"MICH":16,"KU":17,"ISU":18,"TTU":19,"ALA":20,"USC":21,"UCLA":22,"UK":23,"VAN":24,"BYU":25}
 
 # ---------------- Games ----------------
 # fields: date, time (ET, "H:MM AM/PM"), sport, away, home, net, tier ('champ'|'marquee'|''), note, label
@@ -306,135 +333,191 @@ def g(date, time, sport, away, home, net, tier="", note="", label="", neutral=Fa
     G.append({"date": date, "time": time, "sport": sport, "away": away, "home": home, "net": net,
               "tier": tier, "note": note, "label": label, "neutral": neutral})
 
-# Thursday Nov 5
-g("2026-11-05","7:30 PM","CFB","UTSA","FAU","ESPN","","American")
-g("2026-11-05","8:00 PM","CFB","JMU","USM","ESPN2","","Sun Belt")
-g("2026-11-05","8:15 PM","NFL","JAX","BAL","PRIME","marquee","Thursday Night Football · NFL Week 9","TNF")
-# Friday Nov 6
-g("2026-11-06","7:00 PM","CFB","VT","SMU","ESPN","","ACC")
-g("2026-11-06","7:30 PM","CFB","USF","ECU","ESPN2","","American")
-g("2026-11-06","8:00 PM","CFB","NEB","ILL","FOX","","Big Ten")
-g("2026-11-06","9:00 PM","CFB","UNM","NEV","CBSSN","","Mountain West")
-g("2026-11-06","10:15 PM","CFB","TCU","ARIZ","ESPN","","Big 12")
-# Saturday Nov 7
-g("2026-11-07","12:00 PM","CFB","CLEM","SYR","ESPN2","","ACC")
-g("2026-11-07","12:00 PM","CFB","FSU","BC","ACCN","","ACC")
-g("2026-11-07","12:00 PM","CFB","UNC","CONN","CBSSN","","Non-conference")
-g("2026-11-07","12:00 PM","CFB","TLSA","TUL","ESPNU","","American")
-g("2026-11-07","12:00 PM","CFB","BYU","UTAH","ABC","","Big 12 · Holy War")
-g("2026-11-07","12:00 PM","CFB","ISU","BAY","FS1","","Big 12")
-g("2026-11-07","12:00 PM","CFB","UCLA","MINN","FOX","","Big Ten")
-g("2026-11-07","12:00 PM","CFB","TEX","MIZ","ESPN","","SEC")
-g("2026-11-07","12:00 PM","CFB","LIB","NMSU","ESPNU","","Conference USA")
-g("2026-11-07","12:30 PM","CFB","DUKE","NCST","CW","","ACC")
-g("2026-11-07","12:30 PM","CFB","MD","PUR","BTN","","Big Ten")
-g("2026-11-07","12:45 PM","CFB","ARK","AUB","SECN","","SEC")
-g("2026-11-07","1:00 PM","CFB","OKST","KSU","TNT","","Big 12")
-g("2026-11-07","1:00 PM","CFB","ODU","CCU","ESPN+","","Sun Belt")
-g("2026-11-07","2:30 PM","CFB","GAST","APP","ESPN+","","Sun Belt")
-g("2026-11-07","3:00 PM","CFB","DEL","KENN","ESPN+","","Conference USA")
-g("2026-11-07","3:00 PM","CFB","TAMU","SCAR","ESPN","","SEC")
-g("2026-11-07","3:00 PM","CFB","ULM","ARST","ESPN+","","Sun Belt")
-g("2026-11-07","3:30 PM","CFB","MERR","WAKE","ACCN","","Non-conference")
-g("2026-11-07","3:30 PM","CFB","CLT","UAB","ESPN+","","American")
-g("2026-11-07","3:30 PM","CFB","TEM","NAVY","CBSSN","","American")
-g("2026-11-07","3:30 PM","CFB","ALA","LSU","ABC","marquee","SEC · Tiger Stadium, Baton Rouge","BAMA–LSU")
-g("2026-11-07","3:30 PM","CFB","CINC","HOUC","FOX","","Big 12")
-g("2026-11-07","3:30 PM","CFB","ORE","OSU","CBS","","Big Ten")
-g("2026-11-07","3:30 PM","CFB","PSU","WASH","FS1","","Big Ten")
-g("2026-11-07","3:30 PM","CFB","WKU","MTSU","ESPN+","","Conference USA")
-g("2026-11-07","3:30 PM","CFB","MRSH","GASO","ESPN+","","Sun Belt")
-g("2026-11-07","3:45 PM","CFB","UCF","KU","ESPN2","","Big 12")
-g("2026-11-07","4:00 PM","CFB","RICE","UNT","ESPNU","","American")
-g("2026-11-07","4:00 PM","CFB","MOST","FIU","ESPN+","","Conference USA")
-g("2026-11-07","4:00 PM","CFB","LT","TROY","ESPN+","","Sun Belt")
-g("2026-11-07","4:15 PM","CFB","VAN","MSST","SECN","","SEC")
-g("2026-11-07","4:15 PM","CFB","RUT","WIS","BTN","","Big Ten")
-g("2026-11-07","5:00 PM","CFB","USA","ULL","ESPN+","","Sun Belt")
-g("2026-11-07","6:00 PM","CFB","BSU","CSU","USA","","Mountain West")
-g("2026-11-07","6:15 PM","CFB","UK","TENN","ESPN","","SEC · #8 vs #16 · Neyland Stadium")
-g("2026-11-07","7:00 PM","CFB","SHSU","JVST","CBSSN","","Conference USA")
-g("2026-11-07","7:30 PM","CFB","LOU","GT","ACCN","","ACC · Bobby Dodd Stadium")
-g("2026-11-07","7:30 PM","CFB","MIAMI","ND","NBC","marquee","#1 vs #4 · South Bend","GAME OF THE WEEK")
-g("2026-11-07","7:30 PM","CFB","AF","ARMY","CBS","","Commander-in-Chief's Trophy")
-g("2026-11-07","7:30 PM","CFB","COLO","ASU","ESPN2","","Big 12")
-g("2026-11-07","7:30 PM","CFB","IOWA","NW","FOX","","Big Ten")
-g("2026-11-07","7:30 PM","CFB","MSU","MICH","PEACOCK","","Big Ten · Paul Bunyan Trophy")
-g("2026-11-07","7:30 PM","CFB","UGA","MISS","ABC","marquee","#2 vs #12 · Vaught-Hemingway Stadium","UGA–OLE MISS")
-g("2026-11-07","7:45 PM","CFB","OU","FLA","SECN","","SEC")
-g("2026-11-07","9:30 PM","CFB","WVU","TTU","ESPN","","Big 12")
-g("2026-11-07","9:30 PM","CFB","HAW","UTEP","FS1","","Conference USA")
-g("2026-11-07","9:30 PM","CFB","FRES","USU","USA","","Mountain West")
-g("2026-11-07","10:30 PM","CFB","WYO","UNLV","CBSSN","","Mountain West")
-g("2026-11-07","10:30 PM","CFB","TXST","ORST","CW","","Pac-12")
-# Sunday Nov 8
-g("2026-11-08","9:30 AM","NFL","CIN","ATL","NFLN","","International game · Madrid (Falcons home game)","MADRID")
-g("2026-11-08","1:00 PM","NFL","DEN","CAR","CBS","","Regional")
-g("2026-11-08","1:00 PM","NFL","CLE","NO","CBS","","Regional")
-g("2026-11-08","1:00 PM","NFL","DAL","IND","FOX","","Regional"); G[-1]["pop"]=2
-g("2026-11-08","1:00 PM","NFL","DET","MIA","FOX","","Regional"); G[-1]["pop"]=1
-g("2026-11-08","1:00 PM","NFL","NYJ","KC","CBS","","Regional"); G[-1]["pop"]=1
-g("2026-11-08","1:00 PM","NFL","LAR","WAS","FOX","","Regional"); G[-1]["pop"]=1
-g("2026-11-08","1:00 PM","NFL","NYG","PHI","FOX","","NFC East rivalry"); G[-1]["pop"]=1
-g("2026-11-08","4:05 PM","NFL","HOU","LAC","CBS","","Regional")
-g("2026-11-08","4:25 PM","NFL","ARI","SEA","FOX","","Regional")
-g("2026-11-08","4:25 PM","NFL","GB","NE","FOX","","Regional"); G[-1]["pop"]=2
-g("2026-11-08","4:25 PM","NFL","LV","SF","FOX","","Regional"); G[-1]["pop"]=1
-g("2026-11-08","8:20 PM","NFL","TB","CHI","NBC","marquee","Sunday Night Football · Soldier Field","SNF")
-# Monday Nov 9
-g("2026-11-09","8:15 PM","NFL","BUF","MIN","ESPN","marquee","Monday Night Football · ESPN/ABC simulcast","MNF")
-
-# ---- NBA (Nov 2026 carriers: Hawks WANF/Peachtree + Prime in-market, Hornets WSOC/WAXN + DAZN, Grizzlies DAZN)
-g("2026-11-05","10:00 PM","NBA","MIAH","GSW","NBATV","","")
-g("2026-11-06","7:00 PM","NBA","WASW","ATLH","HAWKS","","NBA Cup · East Group C · State Farm Arena","NBA CUP")
-g("2026-11-06","7:00 PM","NBA","BOS","CHA","HORNETS","","NBA Cup · East Group C · Spectrum Center","NBA CUP")
-g("2026-11-06","7:30 PM","NBA","PHI76","CLEC","PRIME","marquee","NBA Cup · Prime Video exclusive","NBA CUP")
-g("2026-11-06","8:00 PM","NBA","OKC","MEMG","DAZN","","NBA Cup · West Group B · FedExForum","NBA CUP")
-g("2026-11-06","10:00 PM","NBA","POR","LAL","PRIME","marquee","NBA Cup · Prime Video exclusive","NBA CUP")
-g("2026-11-07","5:00 PM","NBA","DENN","INDP","NBATV","","NBA Mexico City Game")
-g("2026-11-07","7:30 PM","NBA","BKN","ATLH","HAWKS","","State Farm Arena")
-g("2026-11-07","8:00 PM","NBA","NYK","CLEC","NBATV","","")
-g("2026-11-08","6:00 PM","NBA","LAL","DETP","NBATV","","")
-g("2026-11-09","7:00 PM","NBA","CLEC","CHA","HORNETS","","Spectrum Center")
+# ======== Monday Nov 9 ========
+g("2026-11-09","8:15 PM","NFL","BUF","MIN","ESPN","marquee","Monday Night Football · ESPN/ABC simulcast · U.S. Bank Stadium","MNF")
 g("2026-11-09","7:00 PM","NBA","LAL","ATLH","HAWKS","","LeBron and the Lakers at State Farm Arena")
+g("2026-11-09","7:00 PM","NBA","CLEC","CHA","HORNETS","","Spectrum Center")
 g("2026-11-09","7:00 PM","NBA","WASW","DETP","PEACOCK","marquee","Peacock NBA Monday")
-g("2026-11-09","7:30 PM","NBA","MEMG","TOR","DAZN","","")
-# ---- NHL (no ESPN/TNT games this window; Predators on The Spot Nashville 28, Hurricanes on HHN)
-g("2026-11-05","7:00 PM","NHL","CARH","NYI","HULU","","ESPN+/Hulu national exclusive (streaming only)")
-g("2026-11-05","9:30 PM","NHL","NSH","COL","HULU","","ESPN+/Hulu national exclusive (streaming only)")
-g("2026-11-06","8:00 PM","NHL","SJS","MINW","NHLN","","")
-g("2026-11-07","1:00 PM","NHL","STL","NSH","SPOT-NSH","","Bridgestone Arena · also NHL Network (215)")
-g("2026-11-07","7:00 PM","NHL","UTAM","OTT","NHLN","","")
-g("2026-11-07","8:00 PM","NHL","CHIH","CARH","HHN","","Lenovo Center · late 8:00 start")
-g("2026-11-08","1:00 PM","NHL","FLAP","BOSB","NHLN","","")
-g("2026-11-08","7:00 PM","NHL","NJD","TORM","NHLN","","")
-# ---- College basketball (local teams + ranked matchups; AP preseason poll)
-g("2026-11-05","6:00 PM","NCAAB","WAKE","VAN","ESPN2","","")
-g("2026-11-05","7:00 PM","NCAAB","GAST","CLT","ESPN+","","")
-g("2026-11-05","8:00 PM","NCAAB","CCU","DUKE","ACCN","","Cameron Indoor")
-g("2026-11-05","8:30 PM","NCAAB","PENN","ILL","FS1","","")
-g("2026-11-06","7:00 PM","NCAAB","GASO","GT","ACCNX","","McCamish Pavilion")
-g("2026-11-06","7:00 PM","NCAAB","PRES","UGA","SECN+","","Stegeman Coliseum")
-g("2026-11-06","7:00 PM","NCAAB","JMU","UK","SECN","","Rupp Arena")
-g("2026-11-06","7:00 PM","NCAAB","AMER","CLEM","ACCNX","","")
-g("2026-11-06","7:00 PM","NCAAB","WOF","UNC","ACCN","","Dean Smith Center")
-g("2026-11-06","7:00 PM","NCAAB","ETSU","NCST","ACCNX","","")
-g("2026-11-06","7:00 PM","NCAAB","APSU","KENN","ESPN+","","")
-g("2026-11-06","7:30 PM","NCAAB","ARST","ALA","SECN+","","Coleman Coliseum")
-g("2026-11-06","7:30 PM","NCAAB","NICH","UAB","ESPN+","","")
-g("2026-11-06","8:00 PM","NCAAB","MICH","CONN","TNT","marquee","Hall of Fame Series · TD Garden, Boston","#16 vs #4", neutral=True)
-g("2026-11-06","9:00 PM","NCAAB","MTSU","KU","ESPNU","","Allen Fieldhouse")
-g("2026-11-07","3:00 PM","NCAAB","VCU","MEM","ESPN+","","FedExForum")
-g("2026-11-08","1:00 PM","NCAAB","ARK","UVA","ESPN","marquee","Capital Showcase · Washington DC","#12 vs #9", neutral=True)
-g("2026-11-08","1:00 PM","NCAAB","SEMO","SCAR","SECN+","","Colonial Life Arena")
+g("2026-11-09","7:30 PM","NBA","MEMG","TOR","DAZN","","Scotiabank Arena")
+g("2026-11-09","10:00 PM","NBA","NOP","GSW","NBATV","","Chase Center")
 g("2026-11-09","6:30 PM","NCAAB","SYR","IU","FS1","","Gainbridge Fieldhouse, Indianapolis", neutral=True)
-g("2026-11-09","7:00 PM","NCAAB","RAD","TENN","SECN+","","Thompson-Boling Arena")
+g("2026-11-09","7:00 PM","NCAAB","RAD","TENN","SECN+","","Food City Center")
 g("2026-11-09","7:00 PM","NCAAB","FGCU","UGA","SECN+","","Stegeman Coliseum")
-g("2026-11-09","7:00 PM","NCAAB","UND","CLEM","ACCNX","","")
-g("2026-11-09","7:00 PM","NCAAB","USCU","CCU","ESPN+","","")
-g("2026-11-09","7:30 PM","NCAAB","OAK","ALA","SECN+","","")
-g("2026-11-09","9:00 PM","NCAAB","CLT","SHU","ESPN+","","Venue listed differently by sources — verify")
+g("2026-11-09","7:00 PM","NCAAB","UND","CLEM","ACCNX","","Littlejohn Coliseum")
+g("2026-11-09","7:00 PM","NCAAB","USCU","CCU","ESPN+","","Conway")
+g("2026-11-09","7:30 PM","NCAAB","OAK","ALA","SECN+","","Coleman Coliseum")
+g("2026-11-09","7:30 PM","NCAAB","FAMU","UAB","ESPN+","","Bartow Arena")
+g("2026-11-09","9:00 PM","NCAAB","CLT","SHU","ESPN+","","The Palestra, Philadelphia · tip listed 9:00 or 9:30 — verify", neutral=True)
 g("2026-11-09","9:00 PM","NCAAB","APP","AUB","SECN","","Neville Arena")
+
+# ======== Tuesday Nov 10 ========
+g("2026-11-10","7:00 PM","CFB","KENT","BGSU","ESPNU","","MAC · MACtion")
+g("2026-11-10","7:00 PM","CFB","WMU","AKR","CBSSN","","MAC · MACtion")
+g("2026-11-10","8:00 PM","CFB","OHIO","M-OH","ESPN2","","MAC · MACtion")
+g("2026-11-10","8:00 PM","NBA","BOS","PHI76","NBC","marquee","NBC Coast 2 Coast Tuesday · Peacock simulcast")
+g("2026-11-10","11:00 PM","NBA","OKC","POR","NBC","marquee","NBC Coast 2 Coast Tuesday · Peacock simulcast")
+g("2026-11-10","7:30 PM","NHL","FLAP","CBJ","HULU","","ESPN+/Hulu national exclusive (streaming only)")
+g("2026-11-10","8:00 PM","NHL","DETR","STL","TNT","marquee","NHL on TNT · truTV/HBO Max simulcast")
+g("2026-11-10","10:00 PM","NHL","NSH","LAK","HULU","","ESPN+/Hulu national exclusive (streaming only) · Crypto.com Arena")
+g("2026-11-10","6:00 PM","NCAAB","FLA","FSU","ESPN2","","#1 Florida in Tallahassee · Sunshine Showdown")
+g("2026-11-10","7:00 PM","NCAAB","DUKE","MSU","ESPN","marquee","State Farm Champions Classic · United Center, Chicago","CHAMPIONS CLASSIC", neutral=True)
+g("2026-11-10","7:00 PM","NCAAB","EKU","GT","ACCNX","","McCamish Pavilion")
+g("2026-11-10","7:00 PM","NCAAB","WYO","UNC","ACCN","","Dean Smith Center")
+g("2026-11-10","7:00 PM","NCAAB","PRES","NCST","ACCNX","","Lenovo Center")
+g("2026-11-10","7:00 PM","NCAAB","CHSO","WAKE","ACCNX","","LJVM Coliseum · TV not posted — verify")
+g("2026-11-10","7:00 PM","NCAAB","WIN","KENN","ESPN+","","VyStar Arena")
+g("2026-11-10","7:00 PM","NCAAB","MER","GASO","ESPN+","","Hill Convocation Center · TV not posted — verify")
+g("2026-11-10","7:15 PM","NCAAB","MEM","VAN","SECN+","","Memorial Gym · Memphis site lists 7:00 — verify")
+g("2026-11-10","7:30 PM","NCAAB","EVAN","MTSU","ESPN+","","Murphy Center")
+g("2026-11-10","8:00 PM","NCAAB","ILL","TTU","PEACOCK","","#3 vs #19 · United Supermarkets Arena")
+g("2026-11-10","9:30 PM","NCAAB","UK","KU","ESPN","marquee","State Farm Champions Classic · United Center, Chicago","CHAMPIONS CLASSIC", neutral=True)
+
+# ======== Wednesday Nov 11 ========
+g("2026-11-11","7:30 PM","CFB","BUFF","BALL","ESPN2","","MAC · MACtion")
+g("2026-11-11","7:30 PM","CFB","SAC","CMU","ESPNU","","MAC · MACtion")
+g("2026-11-11","7:30 PM","CFB","UMASS","TOL","CBSSN","","MAC · MACtion")
+g("2026-11-11","7:00 PM","NBA","CLEC","NYK","ESPN","marquee","Madison Square Garden")
+g("2026-11-11","8:00 PM","NBA","DENN","MEMG","DAZN","","FedExForum · also ABC24 (WATN) in Memphis")
+g("2026-11-11","9:30 PM","NBA","GSW","HOUR","ESPN","marquee","Toyota Center")
+g("2026-11-11","7:00 PM","NHL","TBL","BUFS","TNT","marquee","NHL on TNT Wednesday doubleheader · truTV/HBO Max simulcast")
+g("2026-11-11","9:30 PM","NHL","UTAM","VGK","TNT","marquee","NHL on TNT Wednesday doubleheader · truTV/HBO Max simulcast")
+g("2026-11-11","10:00 PM","NHL","NSH","ANA","SPOT-NSH","","Honda Center")
+g("2026-11-11","7:00 PM","NCAAB","SPU","SCAR","SECN+","","Colonial Life Arena")
+g("2026-11-11","7:00 PM","NCAAB","MARQ","MICH","FS1","","Crisler Center · #16 Michigan")
+
+# ======== Thursday Nov 12 ========
+g("2026-11-12","8:00 PM","CFB","MEM","USF","ESPN","","American · Raymond James Stadium")
+g("2026-11-12","9:00 PM","CFB","ULL","ULM","ESPN2","","Sun Belt · Battle on the Bayou")
+g("2026-11-12","8:15 PM","NFL","WAS","NYG","PRIME","marquee","Thursday Night Football · Prime Video exclusive · NFL Week 10","TNF")
+g("2026-11-12","8:00 PM","NBA","DALM","MINT","NBATV","","Target Center")
+g("2026-11-12","9:00 PM","NBA","CHA","PHX","HORNETS","","Mortgage Matchup Center, Phoenix")
+g("2026-11-12","12:00 PM","NHL","CARH","SEAK","NHLN","","NHL Global Series · Helsinki, Finland · noon ET puck drop · also Hurricanes Hockey Network", neutral=True)
+g("2026-11-12","7:00 PM","NHL","TBL","CBJ","FDSN-SUN","","Nationwide Arena")
+g("2026-11-12","7:30 PM","NHL","DETR","FLAP","HULU","","ESPN+/Hulu national exclusive (streaming only)")
+g("2026-11-12","10:00 PM","NHL","NYI","LAK","HULU","","ESPN+/Hulu national exclusive (streaming only)")
+g("2026-11-12","7:00 PM","NCAAB","VUL","CCU","ESPN+","","Conway")
+g("2026-11-12","7:00 PM","NCAAB","LAGR","KENN","ESPN+","","VyStar Arena")
+
+# ======== Friday Nov 13 ========
+g("2026-11-13","7:00 PM","CFB","FSU","PITT","ESPN","","ACC · Acrisure Stadium")
+g("2026-11-13","9:00 PM","CFB","ILL","UCLA","FOX","","Big Ten · #4 UCLA · Rose Bowl")
+g("2026-11-13","10:15 PM","CFB","HOUC","COLO","ESPN","","Big 12 · #14 Houston · Folsom Field")
+g("2026-11-13","7:00 PM","NBA","NYK","INDP","PRIME","marquee","NBA Cup · East Group B · Prime Video exclusive","NBA CUP")
+g("2026-11-13","8:00 PM","NBA","ATLH","CHIB","HAWKS","","NBA Cup · East Group C · United Center","NBA CUP")
+g("2026-11-13","8:00 PM","NBA","MEMG","NOP","DAZN","","NBA Cup · West Group B · Smoothie King Center","NBA CUP")
+g("2026-11-13","9:30 PM","NBA","GSW","SAS","PRIME","marquee","NBA Cup · West Group C · Prime Video exclusive","NBA CUP")
+g("2026-11-13","10:00 PM","NHL","NSH","VGK","SPOT-NSH","","T-Mobile Arena")
+g("2026-11-13","6:00 PM","NCAAB","GTWN","CLEM","ESPNU","","Littlejohn Coliseum")
+g("2026-11-13","7:00 PM","NCAAB","UGA","UNC","ESPN2","","Dean Smith Center · Georgia at North Carolina")
+g("2026-11-13","7:00 PM","NCAAB","TROY","NCST","ACCN","","Lenovo Center")
+g("2026-11-13","7:00 PM","NCAAB","TNST","TENN","SECN+","","Food City Center")
+g("2026-11-13","7:00 PM","NCAAB","NAU","UK","SECN+","","Rupp Arena")
+g("2026-11-13","7:00 PM","NCAAB","PVAM","VAN","SECN+","","Memorial Gym")
+g("2026-11-13","7:00 PM","NCAAB","APP","CLT","ESPN+","","Halton Arena")
+g("2026-11-13","7:30 PM","NCAAB","SEMO","MTSU","ESPN+","","Murphy Center")
+g("2026-11-13","7:30 PM","NCAAB","OSU","CONN","TNT","","Ohio State at #4 UConn · truTV/HBO Max simulcast")
+g("2026-11-13","8:00 PM","NCAAB","SIUE","DUKE","CW","","Cameron Indoor Stadium")
+g("2026-11-13","8:00 PM","NCAAB","GASO","UCF","ESPN+","","Orlando · TV not posted — verify")
+g("2026-11-13","9:00 PM","NCAAB","SHU","ALA","SECN","","Coleman Coliseum")
+g("2026-11-13","9:00 PM","NCAAB","ARIZ","AUB","ESPN2","marquee","#5 Arizona at Auburn · Neville Arena")
+
+# ======== Saturday Nov 14 ========
+g("2026-11-14","12:00 PM","CFB","DUKE","MIAMI","ABC","","ACC · #5 Miami · Hard Rock Stadium")
+g("2026-11-14","12:00 PM","CFB","WAKE","SMU","ESPN","","ACC · #11 vs #25 · Gerald J. Ford Stadium")
+g("2026-11-14","12:00 PM","CFB","SYR","NCST","ACCN","","ACC · Carter-Finley Stadium")
+g("2026-11-14","12:00 PM","CFB","AUB","MSST","ESPN2","","SEC · Davis Wade Stadium")
+g("2026-11-14","12:00 PM","CFB","NW","OSU","FOX","","Big Ten · #21 Ohio State")
+g("2026-11-14","12:00 PM","CFB","WIS","MD","FS1","","Big Ten")
+g("2026-11-14","12:00 PM","CFB","CINC","ISU","TNT","","Big 12 · TNT/truTV")
+g("2026-11-14","12:00 PM","CFB","JMU","CONN","CBSSN","","Non-conference")
+g("2026-11-14","12:30 PM","CFB","GT","CLEM","CW","marquee","ACC · Georgia Tech at Clemson · Memorial Stadium (Death Valley)","GT–CLEMSON")
+g("2026-11-14","12:30 PM","CFB","NEB","RUT","BTN","","Big Ten")
+g("2026-11-14","12:45 PM","CFB","ALA","VAN","SECN","","SEC · #7 Alabama · FirstBank Stadium, Nashville")
+g("2026-11-14","1:00 PM","CFB","ECU","CLT","ESPN+","","American · Jerry Richardson Stadium")
+g("2026-11-14","1:00 PM","CFB","UAB","TEM","ESPN+","","American")
+g("2026-11-14","1:00 PM","CFB","ARST","CCU","ESPN+","","Sun Belt · Brooks Stadium")
+g("2026-11-14","2:00 PM","CFB","KSU","TCU","ESPNU","","Big 12")
+g("2026-11-14","2:00 PM","CFB","TUL","RICE","ESPN+","","American")
+g("2026-11-14","2:00 PM","CFB","KENN","SHSU","ESPN+","","Conference USA")
+g("2026-11-14","3:00 PM","CFB","TENN","TAMU","ESPN","","SEC · #9 Tennessee · Kyle Field")
+g("2026-11-14","3:00 PM","CFB","FIU","DEL","ESPN+","","Conference USA")
+g("2026-11-14","3:00 PM","CFB","NMSU","MOST","ESPN+","","Conference USA")
+g("2026-11-14","3:30 PM","CFB","MIZ","UGA","ABC","","SEC · #1 Georgia · Sanford Stadium, Athens","#1 GEORGIA")
+g("2026-11-14","3:30 PM","CFB","USC","IU","CBS","marquee","Big Ten · #15 vs #6 · Memorial Stadium, Bloomington · Paramount+ simulcast","GAME OF THE WEEK")
+g("2026-11-14","3:30 PM","CFB","MICH","ORE","FS1","","Big Ten · #18 Oregon · Autzen Stadium")
+g("2026-11-14","3:30 PM","CFB","BC","ND","NBC","","#3 Notre Dame · Peacock simulcast")
+g("2026-11-14","3:30 PM","CFB","CAL","UVA","ACCN","","ACC")
+g("2026-11-14","3:30 PM","CFB","BAY","BYU","FOX","","Big 12 · #12 BYU")
+g("2026-11-14","3:30 PM","CFB","ASU","UCF","ESPN2","","Big 12")
+g("2026-11-14","3:30 PM","CFB","MTSU","LIB","CBSSN","","Conference USA")
+g("2026-11-14","3:30 PM","CFB","JVST","WKU","ESPN+","","Conference USA")
+g("2026-11-14","3:30 PM","CFB","GASO","GAST","ESPN+","","Sun Belt · Center Parc Stadium, Atlanta")
+g("2026-11-14","3:30 PM","CFB","FAU","TLSA","ESPN+","","American")
+g("2026-11-14","4:00 PM","CFB","FRES","TXST","CW","","Pac-12")
+g("2026-11-14","4:15 PM","CFB","MISS","OU","SECN","","SEC · #19 Ole Miss")
+g("2026-11-14","4:15 PM","CFB","WASH","MSU","BTN","","Big Ten")
+g("2026-11-14","5:00 PM","CFB","USM","LT","ESPN+","","Non-conference")
+g("2026-11-14","5:30 PM","CFB","KU","WVU","ESPNU","","Big 12")
+g("2026-11-14","6:00 PM","CFB","ORST","BSU","USA","","Pac-12 · #17 Boise State")
+g("2026-11-14","6:00 PM","CFB","APP","MRSH","ESPN+","","Sun Belt")
+g("2026-11-14","6:15 PM","CFB","FLA","UK","ESPN","","SEC · #13 Kentucky · Kroger Field")
+g("2026-11-14","7:00 PM","CFB","LOU","UNC","ESPN2","","ACC · Kenan Stadium")
+g("2026-11-14","7:00 PM","CFB","MINN","PSU","FS1","","Big Ten")
+g("2026-11-14","7:00 PM","CFB","SJSU","AF","CBSSN","","Mountain West")
+g("2026-11-14","7:00 PM","CFB","TROY","USA","ESPN+","","Sun Belt · Hancock Whitney Stadium")
+g("2026-11-14","7:30 PM","CFB","TEX","LSU","ABC","","SEC · #8 vs #24 · Tiger Stadium, Baton Rouge","SEC PRIMETIME")
+g("2026-11-14","7:30 PM","CFB","UTAH","ARIZ","FOX","","Big 12 · #2 vs #22 · Arizona Stadium")
+g("2026-11-14","7:30 PM","CFB","PUR","IOWA","NBC","","Big Ten · #16 Iowa")
+g("2026-11-14","7:30 PM","CFB","STAN","VT","ACCN","","ACC")
+g("2026-11-14","7:30 PM","CFB","UNLV","UNM","CW","","Mountain West · #23 New Mexico")
+g("2026-11-14","7:45 PM","CFB","SCAR","ARK","SECN","","SEC · #20 South Carolina · Razorback Stadium")
+g("2026-11-14","9:00 PM","CFB","UNT","UTSA","ESPNU","","American")
+g("2026-11-14","9:30 PM","CFB","TTU","OKST","ESPN","","Big 12 · #10 Texas Tech")
+g("2026-11-14","9:30 PM","CFB","USU","SDSU","USA","","Pac-12")
+g("2026-11-14","10:00 PM","CFB","WYO","UTEP","FS1","","Mountain West")
+g("2026-11-14","10:30 PM","CFB","CSU","WSU","CBSSN","","Pac-12")
+g("2026-11-14","11:00 PM","CFB","NDSU","HAW","CW","","Non-conference")
+g("2026-11-14","8:00 PM","NBA","BKN","MEMG","DAZN","","FedExForum · Grizzlies notes list 7:00 — verify")
+g("2026-11-14","8:00 PM","NBA","DETP","MIAH","NBATV","","Kaseya Center")
+g("2026-11-14","1:00 PM","NHL","SEAK","CARH","NHLN","","NHL Global Series · Helsinki, Finland · Hurricanes designated home · also Hurricanes Hockey Network", neutral=True)
+g("2026-11-14","7:00 PM","NHL","EDM","TORM","NHLN","","Scotiabank Arena")
+g("2026-11-14","7:00 PM","NHL","DETR","TBL","FDSN-SUN","","Benchmark International Arena · Lightning Hometown Remix jersey debut")
+g("2026-11-14","2:00 PM","NCAAB","GWEB","SCAR","SECN+","","Colonial Life Arena")
+g("2026-11-14","3:30 PM","NCAAB","LSU","GONZ","USA","","#15 Gonzaga · neutral site", neutral=True)
+g("2026-11-14","4:00 PM","NCAAB","UNCA","GT","ACCNX","","McCamish Pavilion · tip listed 4:00 or 7:00 — verify")
+g("2026-11-14","7:00 PM","NCAAB","UAB","JVST","ESPN+","","Pete Mathews Coliseum, Jacksonville AL")
+g("2026-11-14","TBD","NCAAB","SUU","WAKE","ACCNX","","LJVM Coliseum · time and TV not announced")
+
+# ======== Sunday Nov 15 ========
+g("2026-11-15","9:30 AM","NFL","NE","DET","FOX","","International game · Allianz Arena, Munich (Lions designated home)","MUNICH")
+g("2026-11-15","1:00 PM","NFL","KC","ATL","CBS","","Chiefs at Mercedes-Benz Stadium · Falcons home game"); G[-1]["pop"]=2
+g("2026-11-15","1:00 PM","NFL","BUF","NYJ","CBS","","AFC East rivalry"); G[-1]["pop"]=1
+g("2026-11-15","1:00 PM","NFL","MIA","IND","CBS","","Regional")
+g("2026-11-15","1:00 PM","NFL","HOU","CLE","FOX","","Regional")
+g("2026-11-15","1:00 PM","NFL","MIN","GB","FOX","","NFC North rivalry · Lambeau Field"); G[-1]["pop"]=1
+g("2026-11-15","1:00 PM","NFL","JAX","TEN","FOX","","Regional · Nissan Stadium")
+g("2026-11-15","1:00 PM","NFL","CAR","NO","FOX","","Regional · Caesars Superdome · Panthers at Saints")
+g("2026-11-15","4:05 PM","NFL","LAR","ARI","CBS","","Regional · NFC West")
+g("2026-11-15","4:05 PM","NFL","SEA","LV","CBS","","Regional")
+g("2026-11-15","4:25 PM","NFL","SF","DAL","FOX","","FOX late national window · 49ers–Cowboys rivalry"); G[-1]["pop"]=2
+g("2026-11-15","8:20 PM","NFL","PIT","CIN","NBC","marquee","Sunday Night Football · AFC North rivalry · Paycor Stadium","SNF")
+g("2026-11-15","4:30 PM","NBA","CHA","LAC2","HORNETS","","Intuit Dome")
+g("2026-11-15","8:00 PM","NBA","ATLH","MILB","HAWKS","","Fiserv Forum")
+g("2026-11-15","8:00 PM","NHL","FLAP","DALS","NHLN","","American Airlines Center")
+g("2026-11-15","9:00 PM","NHL","NSH","SJS","SPOT-NSH","","SAP Center")
+g("2026-11-15","1:00 PM","NCAAB","LOU","MEM","ESPN","","#11 Louisville at FedExForum")
+g("2026-11-15","1:00 PM","NCAAB","NORF","GAST","ESPN+","","GSU Convocation Center")
+g("2026-11-15","3:00 PM","NCAAB","BAY","TEX","ESPN","","#7 Texas · San Antonio", neutral=True)
+g("2026-11-15","8:00 PM","NCAAB","CCU","WIS","BTN","","Kohl Center")
+
+# ======== Monday Nov 16 ========
+g("2026-11-16","8:15 PM","NFL","LAC","BAL","ESPN","marquee","Monday Night Football · M&T Bank Stadium","MNF")
+g("2026-11-16","7:00 PM","NBA","ORL","BOS","PEACOCK","marquee","Peacock NBA Monday · TD Garden")
+g("2026-11-16","7:00 PM","NBA","MEMG","WASW","DAZN","","Capital One Arena · also ABC24 (WATN) in Memphis")
+g("2026-11-16","7:30 PM","NHL","MTL","NYR","TNT","marquee","NHL on TNT · Madison Square Garden")
+g("2026-11-16","7:00 PM","NCAAB","CIT","CLEM","ACCN","","Littlejohn Coliseum")
+g("2026-11-16","7:00 PM","NCAAB","JVU","UGA","SECN","","Stegeman Coliseum")
+g("2026-11-16","7:00 PM","NCAAB","GRAM","UK","SECN+","","Rupp Arena · may be on SEC Network — verify")
 
 for i,x in enumerate(G): x["id"] = i
 
@@ -481,6 +564,7 @@ NETS = {
  "SECN+":{"label":"SEC Network+ (app)","ch":"stream","inGuide":False},
  "ACCNX":{"label":"ACC Network Extra (app)","ch":"stream","inGuide":False},
  "HULU": {"label":"ESPN+ / Hulu (app)","ch":"stream","inGuide":False},
+ "FDSN-SUN":{"label":"FanDuel Sports Sun (Tampa market) · out of market: ESPN+ (app)","ch":"stream","inGuide":False},
  "PEACOCK":{"label":"Peacock (app)","ch":"stream","inGuide":False},
 }
 
